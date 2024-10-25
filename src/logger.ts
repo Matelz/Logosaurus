@@ -3,11 +3,13 @@ import chalk from 'chalk';
 import moment from "moment";
 import { Request, Response, NextFunction } from "express";
 
+type levelTypes = "INFO" | "WARN" | "ERROR" | "DEBUG" | "TRACE" | "FATAL" | "OFF" | undefined;
+
 interface Log {
   type: string;
   timestamp: string;
   message?: string;
-  level?: string;
+  level?: levelTypes;
   method: string;
   url?: string;
   body?: any;
@@ -66,7 +68,7 @@ export default class Logger {
       } else if (type === "response") {
         return `${log.timestamp} - [${log.level}] - [${method}] ${log.url} - ${log.ip} - ${log.status} - ${log.responseTime}ms`;
       } else {
-        return `${log.timestamp} - [INFO] - ${log.message}`;
+        return `${log.timestamp} - [${log.level}] - ${log.message}`;
       }
     };
   }
@@ -101,6 +103,15 @@ export default class Logger {
     }
   }
 
+  // Deletes all log files in the log folder
+  deleteLogs() {
+    fs.rm(this.logFolder, {recursive: true, force: true}, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+  }
+
   // Writes the log message to a file
   private writeToFile(log: Log) {
     if (!this.fileLogging) {
@@ -130,8 +141,9 @@ export default class Logger {
    * logger.logMessage('This is a log message');
    * @returns {void}
    **/
-  logMessage(message: string) {
+  logMessage(message: string, level: levelTypes = "INFO") {
     var log = {
+      level: level,
       method: '',
       type: "message",
       timestamp: this.date.toISOString(true),
@@ -156,7 +168,7 @@ export default class Logger {
     var method = req.method;
     var requestTime = this.date.milliseconds();
 
-    var log = {
+    var log: Log = {
       level: "INFO",
       type: "request",
       timestamp: timestamp,
@@ -174,7 +186,7 @@ export default class Logger {
 
     res.on("finish", () => {
       var responseTime = this.date.milliseconds() - requestTime;
-      var responseLog = {
+      var responseLog: Log = {
         level: "INFO",
         type: "response",
         timestamp: this.date.toISOString(true),
