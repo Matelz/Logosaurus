@@ -19,14 +19,14 @@ const logger = new Logger();
 
 app.use(logger.logRequest.bind(logger));
 
-logger.logMessage('Hello, World!');
+logger.info('Hello, World!');
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
 app.listen(3000, () => {
-  logger.logMessage('Server is running on port 3000');
+  logger.info('Server is running on port 3000');
 });
 ```
 

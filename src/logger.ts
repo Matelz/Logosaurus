@@ -103,11 +103,22 @@ export default class Logger {
     }
   }
 
-  // Deletes all log files in the log folder
-  deleteLogs() {
-    fs.rm(this.logFolder, {recursive: true, force: true}, (err) => {
+  /**
+   * @description Deletes all log files in the log folder
+   * @example
+   * logger.deleteLogs();
+   * @returns {void}
+   * 
+  **/
+  deleteLogs(): void {
+    if(this.logFolder == ''){
+      return;
+    }
+
+    // WARNING: This operation is irreversible and will delete all log files.
+    fs.rm(this.logFolder, { recursive: true }, (err) => {
       if (err) {
-        throw err;
+        return;
       }
     });
   }
@@ -134,14 +145,8 @@ export default class Logger {
     console.log(logString);
   }
 
-  /**
-   * @param {string} message The message to log
-   * @description Logs a message to the console and a file
-   * @example
-   * logger.logMessage('This is a log message');
-   * @returns {void}
-   **/
-  logMessage(message: string, level: levelTypes = "INFO") {
+  // Logs a message to the console and a file
+  private logMessage(message: string, level: levelTypes = "INFO") {
     var log = {
       level: level,
       method: '',
@@ -154,6 +159,72 @@ export default class Logger {
     this.writeToConsole(log);
   }
 
+  /** 
+    * @param {string} message The message to log
+    * @description Logs an info message to the console and a file
+    * @example
+    * logger.info('This is an info message');
+    * @returns {void}
+  **/
+  info(message: string): void {
+    this.logMessage(message, "INFO");
+  }
+
+  /**
+   * @param {string} message The message to log
+   * @description Logs a warning message to the console and a file
+   * @example
+   * logger.warn('This is a warning message');
+   * @returns {void}
+  **/
+  warn(message: string): void {
+    this.logMessage(message, "WARN");
+  }
+
+  /**
+   * @param {string} message The message to log
+   * @description Logs an error message to the console and a file
+   * @example
+   * logger.error('This is an error message');
+   * @returns {void}
+  **/
+  error(message: string): void {
+    this.logMessage(message, "ERROR");
+  }
+
+  /**
+   * @param {string} message The message to log
+   * @description Logs a debug message to the console and a file
+   * @example
+   * logger.debug('This is a debug message');
+   * @returns {void}
+  **/
+  debug(message: string): void {
+    this.logMessage(message, "DEBUG");
+  }
+
+  /**
+   * @param {string} message The message to log
+   * @description Logs a trace message to the console and a file
+   * @example
+   * logger.trace('This is a trace message');
+   * @returns {void}
+  **/
+  trace(message: string): void {
+    this.logMessage(message, "TRACE");
+  }
+
+  /**
+   * @param {string} message The message to log
+   * @description Logs a fatal message to the console and a file
+   * @example
+   * logger.fatal('This is a fatal message');
+   * @returns {void}
+  **/
+  fatal(message: string): void {
+    this.logMessage(message, "FATAL");
+  }
+
   /**
    * @param {Request} req The request object
    * @param {Response} res The response object
@@ -163,7 +234,7 @@ export default class Logger {
    * app.use(logger.logRequest.bind(logger));
    * @returns {void}
    * **/
-  logRequest(req: Request, res: Response, next: NextFunction) {
+  logRequest(req: Request, res: Response, next: NextFunction): void {
     var timestamp = this.date.toISOString(true);
     var method = req.method;
     var requestTime = this.date.milliseconds();
@@ -216,7 +287,7 @@ export default class Logger {
    * const logger = new Logger(false, true, './logs', '-03:00');
    * @returns {Logger}
    **/
-  constructor(fileLogging = true, consoleLogging = true, logFolder = "./logs", utcOffset = "-03:00", startMessage = true) {
+  constructor(fileLogging: boolean = true, consoleLogging: boolean = true, logFolder: string = "./logs", utcOffset: string = "-03:00", startMessage = true) {
     this.utcOffset = utcOffset;
     this.fileLogging = fileLogging;
     this.consoleLogging = consoleLogging;
