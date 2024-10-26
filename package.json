@@ -1,6 +1,6 @@
 {
   "name": "logosaurus",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "./dist/logger.cjs",
   "types": "./dist/logger.d.ts",
   "module": "./dist/logger.js",
@@ -34,7 +34,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsup src/logger.ts --format cjs,esm --dts --clean --sourcemap",
+    "build": "tsup src/logger.ts --format cjs,esm --dts --clean --sourcemap --minify",
     "lint": "tsc"
   },
   "keywords": [

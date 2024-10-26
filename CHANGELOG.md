@@ -11,3 +11,8 @@ Initial release of Logosaurus.
 
 ### Changes
 - Made the `deleteLogs` method more secure by checking if the `logFolder` property is set before deleting the logs and removing the `force: true` option from the `fs.rm` method.
+
+## 10/26/2024 - Version 1.1.1
+
+### Fixed
+- Removed `.github` folder from the npm package.
