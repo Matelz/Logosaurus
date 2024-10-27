@@ -84,7 +84,7 @@ export default class Logger {
     }
 
     // Check if there is any log file in the logs directory from today
-    var timestamp = this.date.toISOString(true).replace(/:/g, "\uA789");
+    var timestamp = moment().utcOffset(this.utcOffset).toISOString(true).replace(/:/g, "\uA789");
     var logFiles = fs.readdirSync(this.logFolder);
     var found = false;
 
@@ -151,7 +151,7 @@ export default class Logger {
       level: level,
       method: '',
       type: "message",
-      timestamp: this.date.toISOString(true),
+      timestamp: moment().utcOffset(this.utcOffset).toISOString(true),
       message: message,
     };
 
@@ -235,9 +235,9 @@ export default class Logger {
    * @returns {void}
    * **/
   logRequest(req: Request, res: Response, next: NextFunction): void {
-    var timestamp = this.date.toISOString(true);
+    var timestamp = moment().utcOffset(this.utcOffset).toISOString(true);
     var method = req.method;
-    var requestTime = this.date.milliseconds();
+    var requestTime = moment().utcOffset(this.utcOffset).milliseconds();
 
     var log: Log = {
       level: "INFO",
@@ -256,11 +256,11 @@ export default class Logger {
     this.writeToConsole(log);
 
     res.on("finish", () => {
-      var responseTime = this.date.milliseconds() - requestTime;
+      var responseTime = moment().utcOffset(this.utcOffset).milliseconds() - requestTime;
       var responseLog: Log = {
         level: "INFO",
         type: "response",
-        timestamp: this.date.toISOString(true),
+        timestamp: moment().utcOffset(this.utcOffset).toISOString(true),
         method: method,
         url: req.url,
         ip: req.ip,
