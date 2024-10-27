@@ -1,6 +1,6 @@
 {
   "name": "logosaurus",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "./dist/logger.cjs",
   "types": "./dist/logger.d.ts",
   "module": "./dist/logger.js",
