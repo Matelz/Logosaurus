@@ -1,4 +1,4 @@
-# Logosaurus (_log-o-saurus_)
+# 🦖 Logosaurus (_log-o-saurus_)
 
 Logosaurus is a simple logger made to be used as a middleware in ExpressJS applications. It is designed to be simple to use and easy to understand. It is also designed to be easily extensible and customizable.
 
