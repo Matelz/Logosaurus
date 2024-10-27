@@ -16,3 +16,8 @@ Initial release of Logosaurus.
 
 ### Fixed
 - Removed `.github` folder from the npm package.
+
+## 10/27/2024 - Version 1.1.2
+
+### Fixed
+- Fixed time not working problem.
