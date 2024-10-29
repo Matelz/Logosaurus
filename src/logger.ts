@@ -51,6 +51,9 @@ export default class Logger {
           case "POST":
             method = chalk.blue(log.method);
             break;
+	  case "PATCH":
+	    method = chalk.magenta(log.method);
+	    break;
           case "PUT":
             method = chalk.yellow(log.method);
             break;
